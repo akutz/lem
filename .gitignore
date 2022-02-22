@@ -1,0 +1,17 @@
+*.a
+*.o
+*.bin
+*.out
+*.test
+profile*.svg
+*.pid
+*.class
+*.profile
+*.ex*
+.DS_Store
+.vscode/
+bin/
+obj/
+
+/lem
+

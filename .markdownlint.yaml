@@ -1,0 +1,25 @@
+# The complete config reference is available at
+# https://github.com/DavidAnson/markdownlint/blob/main/schema/.markdownlint.yaml.
+
+default: true
+
+# MD010/no-hard-tabs - Hard tabs
+MD010:
+  # Include code blocks
+  code_blocks: false
+
+# MD012/no-multiple-blanks - Multiple consecutive blank lines
+MD012:
+  # Consecutive blank lines
+  maximum: 2
+
+# MD013/line-length - Line length
+MD013:
+  # Number of characters
+  line_length: -1
+
+# MD022/blanks-around-headings/blanks-around-headers - Headings should be surrounded by blank lines
+MD022:
+  # Blank lines above heading
+  lines_above: 2
+

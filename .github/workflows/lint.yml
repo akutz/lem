@@ -1,0 +1,15 @@
+name: lint
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+    - name: README.md
+      uses: avto-dev/markdown-lint@v1.5.0
+      with:
+        config: './.markdownlint.yaml'
+        args:   './README.md'
