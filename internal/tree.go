@@ -17,6 +17,7 @@ limitations under the License.
 package internal
 
 import (
+	"fmt"
 	"sync"
 	"testing"
 )
@@ -142,16 +143,16 @@ func (tr TreeNode) run(t *testing.T, ctx Context) {
 		tc := tr.Tests[i]
 		t.Run(tc.Name, func(t *testing.T) {
 			// Assert the expected leak, escape, move decisions match.
-			for _, rx := range tc.Matches {
-				if rx.FindString(ctx.BuildOutput) == "" {
-					t.Errorf("exp.m=%s", rx)
+			for _, lm := range tc.Matches {
+				if s := lm.Regexp.FindString(ctx.BuildOutput); s == "" {
+					t.Error(getBuildOutputErr(lm, s))
 				}
 			}
 
 			// Assert the expected leak, escape, move decisions do not match.
-			for _, rx := range tc.Natches {
-				if s := rx.FindString(ctx.BuildOutput); s != "" {
-					t.Errorf("exp.m!=%s, found=%s", rx, s)
+			for _, lm := range tc.Natches {
+				if s := lm.Regexp.FindString(ctx.BuildOutput); s != "" {
+					t.Error(getBuildOutputErr(lm, s))
 				}
 			}
 
@@ -172,4 +173,33 @@ func (tr TreeNode) run(t *testing.T, ctx Context) {
 			}
 		})
 	}
+}
+
+const expectedBuildOutputNotFound = `error: build optimization
+reason: not found
+regexp: %s
+source: %s
+`
+
+const expectedBuildOutputWasFound = `error: build optimization
+reason: was found
+output: %s
+regexp: %s
+source: %s
+`
+
+func getBuildOutputErr(lm LineMatcher, found string) string {
+	if found == "" {
+		return fmt.Sprintf(
+			expectedBuildOutputNotFound,
+			lm.Regexp.String(),
+			lm.Source,
+		)
+	}
+	return fmt.Sprintf(
+		expectedBuildOutputWasFound,
+		found,
+		lm.Regexp.String(),
+		lm.Source,
+	)
 }

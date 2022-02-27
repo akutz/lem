@@ -20,11 +20,39 @@ import (
 	"fmt"
 	"go/parser"
 	"go/token"
+	"os"
 	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
 )
+
+// LineMatcher is a regular expression used to patch an expected expression
+// from build optimization output for a line in a Go source file.
+type LineMatcher struct {
+	// Regexp is matched against the build optimization output.
+	Regexp *regexp.Regexp
+
+	// Source is the line of source code for which this matcher was built.
+	Source string
+}
+
+func (lm LineMatcher) deepEqual(b LineMatcher) bool {
+	if lm.Source != b.Source {
+		return false
+	}
+	ar, br := lm.Regexp, b.Regexp
+	if ar == nil && br != nil {
+		return false
+	}
+	if ar != nil && br == nil {
+		return false
+	}
+	if ar != nil && br != nil && ar.String() != br.String() {
+		return false
+	}
+	return true
+}
 
 // TestCase is a test case parsed from the lem comments in a source file.
 type TestCase struct {
@@ -45,11 +73,11 @@ type TestCase struct {
 
 	// Matches maps to lem.<ID>.m= and is a list of patterns that must appear
 	// in the optimization output.
-	Matches []*regexp.Regexp
+	Matches []LineMatcher
 
 	// Natches maps to lem.<ID>.m!= and is a list of patterns that must appear
 	// in the optimization output.
-	Natches []*regexp.Regexp
+	Natches []LineMatcher
 }
 
 func (tc TestCase) deepEqual(b TestCase) bool {
@@ -69,8 +97,7 @@ func (tc TestCase) deepEqual(b TestCase) bool {
 		return false
 	}
 	for i := range tc.Matches {
-		am, bm := tc.Matches[i], b.Matches[i]
-		if am.String() != bm.String() {
+		if !tc.Matches[i].deepEqual(b.Matches[i]) {
 			return false
 		}
 	}
@@ -78,8 +105,7 @@ func (tc TestCase) deepEqual(b TestCase) bool {
 		return false
 	}
 	for i := range tc.Natches {
-		am, bm := tc.Natches[i], b.Natches[i]
-		if am.String() != bm.String() {
+		if !tc.Natches[i].deepEqual(b.Natches[i]) {
 			return false
 		}
 	}
@@ -114,6 +140,7 @@ var (
 	bytesRx = regexp.MustCompile(`^// lem\.([^.]+)\.bytes=(\d+)(?:-(\d+))?$`)
 	matchRx = regexp.MustCompile(`^// lem\.([^.]+)\.m=(.+)$`)
 	natchRx = regexp.MustCompile(`^// lem\.([^.]+)\.m!=(.+)$`)
+	newlnRx = regexp.MustCompile(`\r?\n`)
 )
 
 // GetTestCases parses the provided Go source files & returns a TestCase slice.
@@ -154,6 +181,14 @@ func (t testCaseLookupTable) Get(id string) (*TestCase, error) {
 	return tc, nil
 }
 
+func readLines(filePath string) ([]string, error) {
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		return nil, err
+	}
+	return newlnRx.Split(string(data), -1), nil
+}
+
 func getTestCasesInFile(
 	filePath string,
 	lookupTbl testCaseLookupTable) ([]TestCase, error) {
@@ -169,6 +204,11 @@ func getTestCasesInFile(
 
 	var fset token.FileSet
 	f, err := parser.ParseFile(&fset, filePath, nil, parser.ParseComments)
+	if err != nil {
+		return nil, err
+	}
+
+	lines, err := readLines(filePath)
 	if err != nil {
 		return nil, err
 	}
@@ -247,7 +287,10 @@ func getTestCasesInFile(
 				if err != nil {
 					return nil, err
 				}
-				tc.Matches = append(tc.Matches, r)
+				tc.Matches = append(tc.Matches, LineMatcher{
+					Regexp: r,
+					Source: lines[lineNo],
+				})
 			} else if m := natchRx.FindStringSubmatch(l); m != nil {
 				if tc, _ = lookupTbl.Get(m[1]); tc == nil {
 					testCases = append(testCases, TestCase{ID: m[1]})
@@ -261,7 +304,10 @@ func getTestCasesInFile(
 				if err != nil {
 					return nil, err
 				}
-				tc.Natches = append(tc.Natches, r)
+				tc.Natches = append(tc.Natches, LineMatcher{
+					Regexp: r,
+					Source: lines[lineNo],
+				})
 			}
 		}
 	}

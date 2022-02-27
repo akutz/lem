@@ -238,8 +238,11 @@ func TestTreeInsert(t *testing.T) {
 				{
 					ID:   "a",
 					Name: "1",
-					Matches: []*regexp.Regexp{
-						regexp.MustCompile("(?s)hello"),
+					Matches: []internal.LineMatcher{
+						{
+							Regexp: regexp.MustCompile("(?s)hello"),
+							Source: "hello",
+						},
 					},
 				},
 			},
@@ -253,8 +256,11 @@ func TestTreeInsert(t *testing.T) {
 								{
 									ID:   "a",
 									Name: "1",
-									Matches: []*regexp.Regexp{
-										regexp.MustCompile("(?s)hello"),
+									Matches: []internal.LineMatcher{
+										{
+											Regexp: regexp.MustCompile("(?s)hello"),
+											Source: "hello",
+										},
 									},
 								},
 							},
@@ -269,9 +275,15 @@ func TestTreeInsert(t *testing.T) {
 				{
 					ID:   "a",
 					Name: "1",
-					Matches: []*regexp.Regexp{
-						regexp.MustCompile("(?s)hello"),
-						regexp.MustCompile("(?s)world"),
+					Matches: []internal.LineMatcher{
+						{
+							Regexp: regexp.MustCompile("(?s)hello"),
+							Source: "hello",
+						},
+						{
+							Regexp: regexp.MustCompile("(?s)world"),
+							Source: "world",
+						},
 					},
 				},
 			},
@@ -285,9 +297,15 @@ func TestTreeInsert(t *testing.T) {
 								{
 									ID:   "a",
 									Name: "1",
-									Matches: []*regexp.Regexp{
-										regexp.MustCompile("(?s)hello"),
-										regexp.MustCompile("(?s)world"),
+									Matches: []internal.LineMatcher{
+										{
+											Regexp: regexp.MustCompile("(?s)hello"),
+											Source: "hello",
+										},
+										{
+											Regexp: regexp.MustCompile("(?s)world"),
+											Source: "world",
+										},
 									},
 								},
 							},
@@ -303,9 +321,15 @@ func TestTreeInsert(t *testing.T) {
 				{
 					ID:   "a",
 					Name: "1",
-					Matches: []*regexp.Regexp{
-						regexp.MustCompile("(?m)hello"),
-						regexp.MustCompile("(?m)world"),
+					Matches: []internal.LineMatcher{
+						{
+							Regexp: regexp.MustCompile("(?m)hello"),
+							Source: "hello",
+						},
+						{
+							Regexp: regexp.MustCompile("(?m)world"),
+							Source: "world",
+						},
 					},
 				},
 			},
@@ -319,8 +343,11 @@ func TestTreeInsert(t *testing.T) {
 								{
 									ID:   "a",
 									Name: "1",
-									Matches: []*regexp.Regexp{
-										regexp.MustCompile("(?m)hello"),
+									Matches: []internal.LineMatcher{
+										{
+											Regexp: regexp.MustCompile("(?m)hello"),
+											Source: "hello",
+										},
 									},
 								},
 							},
@@ -336,8 +363,11 @@ func TestTreeInsert(t *testing.T) {
 				{
 					ID:   "a",
 					Name: "1",
-					Matches: []*regexp.Regexp{
-						regexp.MustCompile("(?m)hello"),
+					Matches: []internal.LineMatcher{
+						{
+							Regexp: regexp.MustCompile("(?m)hello"),
+							Source: "hello",
+						},
 					},
 				},
 			},
@@ -351,8 +381,11 @@ func TestTreeInsert(t *testing.T) {
 								{
 									ID:   "a",
 									Name: "1",
-									Matches: []*regexp.Regexp{
-										regexp.MustCompile("(?s)hello"),
+									Matches: []internal.LineMatcher{
+										{
+											Regexp: regexp.MustCompile("(?s)hello"),
+											Source: "hello",
+										},
 									},
 								},
 							},
@@ -367,8 +400,11 @@ func TestTreeInsert(t *testing.T) {
 				{
 					ID:   "a",
 					Name: "1",
-					Natches: []*regexp.Regexp{
-						regexp.MustCompile("(?s)hello"),
+					Natches: []internal.LineMatcher{
+						{
+							Regexp: regexp.MustCompile("(?s)hello"),
+							Source: "hello",
+						},
 					},
 				},
 			},
@@ -382,8 +418,11 @@ func TestTreeInsert(t *testing.T) {
 								{
 									ID:   "a",
 									Name: "1",
-									Natches: []*regexp.Regexp{
-										regexp.MustCompile("(?s)hello"),
+									Natches: []internal.LineMatcher{
+										{
+											Regexp: regexp.MustCompile("(?s)hello"),
+											Source: "hello",
+										},
 									},
 								},
 							},
@@ -398,9 +437,15 @@ func TestTreeInsert(t *testing.T) {
 				{
 					ID:   "a",
 					Name: "1",
-					Natches: []*regexp.Regexp{
-						regexp.MustCompile("(?s)hello"),
-						regexp.MustCompile("(?s)world"),
+					Natches: []internal.LineMatcher{
+						{
+							Regexp: regexp.MustCompile("(?s)hello"),
+							Source: "hello",
+						},
+						{
+							Regexp: regexp.MustCompile("(?s)world"),
+							Source: "world",
+						},
 					},
 				},
 			},
@@ -414,9 +459,15 @@ func TestTreeInsert(t *testing.T) {
 								{
 									ID:   "a",
 									Name: "1",
-									Natches: []*regexp.Regexp{
-										regexp.MustCompile("(?s)hello"),
-										regexp.MustCompile("(?s)world"),
+									Natches: []internal.LineMatcher{
+										{
+											Regexp: regexp.MustCompile("(?s)hello"),
+											Source: "hello",
+										},
+										{
+											Regexp: regexp.MustCompile("(?s)world"),
+											Source: "world",
+										},
 									},
 								},
 							},
@@ -432,9 +483,15 @@ func TestTreeInsert(t *testing.T) {
 				{
 					ID:   "a",
 					Name: "1",
-					Natches: []*regexp.Regexp{
-						regexp.MustCompile("(?m)hello"),
-						regexp.MustCompile("(?m)world"),
+					Natches: []internal.LineMatcher{
+						{
+							Regexp: regexp.MustCompile("(?m)hello"),
+							Source: "hello",
+						},
+						{
+							Regexp: regexp.MustCompile("(?m)world"),
+							Source: "world",
+						},
 					},
 				},
 			},
@@ -448,8 +505,11 @@ func TestTreeInsert(t *testing.T) {
 								{
 									ID:   "a",
 									Name: "1",
-									Natches: []*regexp.Regexp{
-										regexp.MustCompile("(?m)hello"),
+									Natches: []internal.LineMatcher{
+										{
+											Regexp: regexp.MustCompile("(?m)hello"),
+											Source: "hello",
+										},
 									},
 								},
 							},
@@ -465,8 +525,11 @@ func TestTreeInsert(t *testing.T) {
 				{
 					ID:   "a",
 					Name: "1",
-					Natches: []*regexp.Regexp{
-						regexp.MustCompile("(?m)hi"),
+					Natches: []internal.LineMatcher{
+						{
+							Regexp: regexp.MustCompile("(?m)hello"),
+							Source: "hello",
+						},
 					},
 				},
 			},
@@ -480,8 +543,11 @@ func TestTreeInsert(t *testing.T) {
 								{
 									ID:   "a",
 									Name: "1",
-									Natches: []*regexp.Regexp{
-										regexp.MustCompile("(?s)hi"),
+									Natches: []internal.LineMatcher{
+										{
+											Regexp: regexp.MustCompile("(?s)hello"),
+											Source: "hello",
+										},
 									},
 								},
 							},
