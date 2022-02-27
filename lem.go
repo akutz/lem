@@ -170,18 +170,6 @@ func copyNillableImportedPackageSlice(
 	return dst
 }
 
-// MyDirectory returns the filesystem path to the directory of the caller.
-//
-// This function is useful for callers wanting to populate a B.IncldueDirs
-// field.
-func MyDirectory() string {
-	_, callersFilePath, _, ok := runtime.Caller(1)
-	if !ok {
-		return ""
-	}
-	return filepath.Dir(callersFilePath)
-}
-
 func theirDirectory() (string, error) {
 	_, callersFilePath, _, ok := runtime.Caller(2)
 	if !ok {
