@@ -289,7 +289,7 @@ func getTestCasesInFile(
 				}
 				tc.Matches = append(tc.Matches, LineMatcher{
 					Regexp: r,
-					Source: lines[lineNo],
+					Source: lines[lineNo-1],
 				})
 			} else if m := natchRx.FindStringSubmatch(l); m != nil {
 				if tc, _ = lookupTbl.Get(m[1]); tc == nil {
@@ -306,7 +306,7 @@ func getTestCasesInFile(
 				}
 				tc.Natches = append(tc.Natches, LineMatcher{
 					Regexp: r,
-					Source: lines[lineNo],
+					Source: lines[lineNo-1],
 				})
 			}
 		}
