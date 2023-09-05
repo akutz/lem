@@ -105,7 +105,7 @@ The term _directive_ refers to the comments used to configure lem. Please note t
 | [Expected allocs](#expected-allocs) | `^// lem\.(?P<ID>[^.]+)\.alloc=(?P<MIN>\d+)(?:-(?P<MAX>\d+))?$` |  |  | Number of expected allocations. |
 | [Expected bytes](#expected-bytes) | `^// lem\.(?P<ID>[^.]+)\.bytes=(?P<MIN>\d+)(?:-(?P<MAX>\d+))?$` |  |  | Number of expected, allocated bytes. |
 | [Match](#match) | `^// lem\.(?P<ID>[^.]+)\.m=(?P<MATCH>.+)$` | ✓ | ✓ | A regex pattern that must appear in the build optimization output. |
-| [Natch](#natch) | `^// lem\.(?P<ID>[^.]+)\.m=(?P<NATCH>.+)$` | ✓ | ✓ | A regex pattern that must _**not**_ appear in the build optimization output. |
+| [Natch](#natch) | `^// lem\.(?P<ID>[^.]+)\.m!=(?P<NATCH>.+)$` | ✓ | ✓ | A regex pattern that must _**not**_ appear in the build optimization output. |
 
 
 ### Name
